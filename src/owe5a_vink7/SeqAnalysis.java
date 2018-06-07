@@ -7,15 +7,16 @@ package owe5a_vink7;
 import java.util.ArrayList;
 
 public class SeqAnalysis extends Exception {
-    static final char[] HYDROPHILIC = {'R', 'K', 'N', 'H', 'P'};
     static final char[] HYDROPHOBIC = {'L', 'I', 'F', 'W', 'V', 'M'};
+    static final char[] HYDROPHILIC = {'R', 'K', 'N', 'H', 'P'};
     private String protSeq;
 
     SeqAnalysis(String input) throws InvalidSeqException{
 	checkSequence(input);
     }
 	
-    //controleert of de invoer een geldige eiwitsequentie is en gooit anders een exception op
+    //controleert of de input een geldige eiwitsequentie is en initialiseert dan de protSeq variabele van het seqAnalysis object
+    //-gooit een exception op in het geval van onjuiste input
     private void checkSequence (String input) throws InvalidSeqException{
 	String seq = input.toUpperCase();	
 	if(seq.matches("[ACDEFGHIKLMNPQRSTVWY]+")){

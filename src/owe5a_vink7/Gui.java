@@ -17,6 +17,7 @@ public class Gui extends JFrame implements ActionListener{
     private JButton browseButton, analyseButton;
     private JLabel label1, label2;
     private JPanel panel;
+    private Graphics g;
     private JTextArea area;
     private JFileChooser fileChooser;
 
@@ -34,9 +35,11 @@ public class Gui extends JFrame implements ActionListener{
 		
 	browseButton = new JButton("Browse");
 	add(browseButton);
+        browseButton.addActionListener(this);
 		
 	analyseButton = new JButton("Visualiseer");
 	add(analyseButton);
+        analyseButton.addActionListener(this);
 		
 	label1 = new JLabel("Informatie");
 	add(label1);
@@ -51,14 +54,27 @@ public class Gui extends JFrame implements ActionListener{
 	scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	add (scroll);
 	    
-        panel = new JPanel();
+        panel = new JPanel(){
+            public void paintComponent(Graphics g) {
+                g.setColor(Color.lightGray);
+                g.fillRect(0, 0, 500, 150);
+                g.setColor(Color.black);
+                g.fillRect(25, 65, 25, 25);
+                g.setColor(Color.black);
+                g.fillRect(25, 65, 25, 25);
+                g.setColor(Color.blue);
+                g.fillRect(25, 90, 25, 25);
+                g.setColor(Color.red);
+                g.fillRect(25, 115, 25, 25);
+		
+                g.setColor(Color.black);
+                g.drawString("Neutraal", 55, 82);
+                g.drawString("Hydrofoob", 55, 107);
+                g.drawString("Hydrofiel", 55, 132);
+            }
+        };
         panel.setPreferredSize(new Dimension(500, 150));
-        panel.setBackground(Color.lightGray);
-        add(panel);       
-        
-        
-        analyseButton.addActionListener(this);
-        browseButton.addActionListener(this);
+        add(panel);  
     }
 	
     public void actionPerformed(ActionEvent event){
@@ -74,10 +90,8 @@ public class Gui extends JFrame implements ActionListener{
 		JOptionPane.showMessageDialog(null, "Bestand is leeg");
             } else try {
                 SeqAnalysis analyse = new SeqAnalysis(input);
-		Graphics graph = panel.getGraphics();
-
-		drawVisualisation(graph, analyse);
-		drawLegend(graph);
+		Graphics g = panel.getGraphics();
+		drawVisualisation(g, analyse);
             } catch (InvalidSeqException e) {
 		JOptionPane.showMessageDialog(null, "Corrupte sequentie");
             }
@@ -104,21 +118,6 @@ public class Gui extends JFrame implements ActionListener{
 		JOptionPane.showMessageDialog(null, "Onbekende fout");
             }
         }
-    }
-	
-	//tekent legenda
-    public void drawLegend(Graphics g){
-        g.setColor(Color.black);
-	g.fillRect(25, 65, 25, 25);
-	g.setColor(Color.blue);
-	g.fillRect(25, 90, 25, 25);
-	g.setColor(Color.red);
-	g.fillRect(25, 115, 25, 25);
-		
-	g.setColor(Color.black);
-	g.drawString("Neutraal", 55, 82);
-	g.drawString("Hydrofoob", 55, 107);
-	g.drawString("Hydrofiel", 55, 132);
     }
 	
     //tekent de visualisatie van de sequentie-analyse
